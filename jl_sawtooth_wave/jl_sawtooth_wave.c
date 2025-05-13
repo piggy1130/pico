@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdint.h>
+#include <unistd.h> // for usleep
+
+#include "hardware/i2c.h"
+#include "pico/stdlib.h"
+
+#define I2C_PORT i2c0
+#define MCP4725_ADDR 0x60
+#define SDA_PIN 4
+#define SCL_PIN 5
+
+void mcp4725_write(uint16_t value) {
+    uint8_t buffer[3];
+    buffer[0] = 0x40; // Command to update DAC (write DAC register)
+    buffer[1] = (value >> 4) & 0xFF; // Upper 8 bits
+    buffer[2] = (value & 0x0F) << 4; // Lower 4 bits
+
+    i2c_write_blocking(I2C_PORT, MCP4725_ADDR, buffer, 3, false);
+}
+
+int main() {
+    stdio_init_all();
+
+    i2c_init(I2C_PORT, 100 * 1000); // 100kHz I2C
+    gpio_set_function(SDA_PIN, GPIO_FUNC_I2C);
+    gpio_set_function(SCL_PIN, GPIO_FUNC_I2C);
+    gpio_pull_up(SDA_PIN);
+    gpio_pull_up(SCL_PIN);
+
+    const uint16_t max_val = 4095;
+    const uint16_t step = 16; // Increase this to make wave faster
+    const int delay_us = 1000; // Adjust for desired frequency
+
+    while (1) {
+        for (uint16_t val = 0; val <= max_val; val += step) {
+            mcp4725_write(val);
+            sleep_us(delay_us);
+        }
+    }
+
+    return 0;
+}
+
+
