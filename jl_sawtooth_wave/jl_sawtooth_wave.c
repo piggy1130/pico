@@ -32,15 +32,28 @@ int main() {
     gpio_pull_up(SCL_PIN);
 
     const uint16_t max_val = 4095;
-    const uint16_t step = 16; // how much to increment each time. Increase this to make wave faster
-    const int delay_us = 1000; // delay between steps. Adjust for desired frequency. (in microseconds → sets frequency of sawtooth)
+    const uint16_t slow_step = 16;      // Small step = slow rise
+    const uint16_t fast_step = 256;     // Big step = fast fall
+    const int slow_delay_us = 1000;     // Longer delay for slow rise. (in microseconds → sets frequency of sawtooth)
+    const int fast_delay_us = 500;      // Short delay for fast fall
 
     // This produces a repeating sawtooth wave, where voltage increases linearly from 0V to max Vout(3.3V), then resets.
     while (1) {
-        for (uint16_t val = 0; val <= max_val; val += step) {
+        // Slow rise
+        for (uint16_t val = 0; val <= max_val; val += slow_step) {
             mcp4725_write(val);
-            sleep_us(delay_us); // microsecond level delay
+            sleep_us(slow_delay_us);
         }
+
+        // Fast drop
+        for (uint16_t val = max_val; val >= fast_step; val -= fast_step) {
+            mcp4725_write(val);
+            sleep_us(fast_delay_us);
+        }
+
+        // Final step to reach 0 cleanly
+        mcp4725_write(0);
+        sleep_us(fast_delay_us);
     }
 
     return 0;
