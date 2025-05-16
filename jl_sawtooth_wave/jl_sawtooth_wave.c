@@ -36,18 +36,24 @@ int main() {
     const uint16_t fast_step = 256;     // Big step = fast fall
     const int slow_delay_us = 1000;     // Longer delay for slow rise. (in microseconds → sets frequency of sawtooth)
     const int fast_delay_us = 500;      // Short delay for fast fall
+    const uint pulse_gen = 28;
+
+    gpio_init(pulse_gen);
+    gpio_set_dir(pulse_gen, GPIO_OUT);
 
     // This produces a repeating sawtooth wave, where voltage increases linearly from 0V to max Vout(3.3V), then resets.
     while (1) {
         // Slow rise
         for (uint16_t val = 0; val <= max_val; val += slow_step) {
             mcp4725_write(val);
+            gpio_put(pulse_gen, 1);
             sleep_us(slow_delay_us);
         }
 
         // Fast drop
         for (uint16_t val = max_val; val >= fast_step; val -= fast_step) {
             mcp4725_write(val);
+            gpio_put(pulse_gen, 0);
             sleep_us(fast_delay_us);
         }
 
@@ -58,5 +64,6 @@ int main() {
 
     return 0;
 }
+
 
 
