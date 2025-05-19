@@ -52,8 +52,11 @@ target_link_libraries(jl_sawtooth_wave
 
 # Add the standard include files to the build
 target_include_directories(jl_sawtooth_wave PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}/data
 )
+
+
 
 pico_add_extra_outputs(jl_sawtooth_wave)
 
