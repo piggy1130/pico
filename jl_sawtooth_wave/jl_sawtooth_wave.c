@@ -28,26 +28,29 @@ void mcp4725_write(uint16_t value) {
 int main() {
     stdio_init_all();
     
-     // Initialize I2C and GPIO
+     // Initialize I2C
     i2c_init(I2C_PORT, 400 * 1000); // 400kHz I2C
     gpio_set_function(SDA_PIN, GPIO_FUNC_I2C);
     gpio_set_function(SCL_PIN, GPIO_FUNC_I2C);
     gpio_pull_up(SDA_PIN);
     gpio_pull_up(SCL_PIN);
-
+    // Initialize GPIO
     gpio_init(PULSE_PIN);
     gpio_set_dir(PULSE_PIN, GPIO_OUT);
 
     
     // This produces a repeating sawtooth wave, where voltage increases linearly from 0V to max Vout(3.3V), then resets.
     while (1) {
-
+        gpio_put(PULSE_PIN, 1);
         for (int i = 0; i < WAVEFORM_SIZE; i++) {
             mcp4725_write(sawtooth_wave[i]);  // DAC output
             //gpio_put(PULSE_PIN, square_wave[i]);
-            sleep_us(20);  // ~50kHz update rate (adjust as needed)
+            //sleep_us(20);  // ~50kHz update rate (adjust as needed)
+            if (i == 1000){
+                gpio_put(PULSE_PIN, 0);
+            }
         }
-
+        
 
     }
 

@@ -5,18 +5,19 @@ input_file = "waveforms.txt"
 output_file = "waveform_data.h"
 
 sawtooth_values = []
-square_values = []
+#square_values = []
 
 # Read the .txt file and extract columns
 with open(input_file, "r") as f:
     for line in f:
         parts = line.strip().split(",")
-        if len(parts) == 3:
+        #if len(parts) == 3:
+        if len(parts) == 2:
             try:
                 saw = int(float(parts[1]))
-                square = int(float(parts[2]))
+                #square = int(float(parts[2]))
                 sawtooth_values.append(saw)
-                square_values.append(square)
+                #square_values.append(square)
             except ValueError:
                 continue  # Skip malformed lines
 
@@ -33,13 +34,13 @@ with open(output_file, "w") as f:
             f.write("\n")
     f.write("\n};\n\n")
 
-    # Square wave array
-    f.write("const uint16_t square_wave[WAVEFORM_SIZE] = {\n")
-    for i, val in enumerate(square_values):
-        f.write(f"  {val},")
-        if (i + 1) % 10 == 0:
-            f.write("\n")
-    f.write("\n};\n\n")
+    # # Square wave array
+    # f.write("const uint16_t square_wave[WAVEFORM_SIZE] = {\n")
+    # for i, val in enumerate(square_values):
+    #     f.write(f"  {val},")
+    #     if (i + 1) % 10 == 0:
+    #         f.write("\n")
+    # f.write("\n};\n\n")
 
     f.write("#endif // WAVEFORM_DATA_H\n")
 
