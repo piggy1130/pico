@@ -24,7 +24,6 @@ void mcp4725_write(uint16_t value) {
     i2c_write_blocking(I2C_PORT, MCP4725_ADDR, buffer, 3, false);
 }
 
-
 int main() {
     stdio_init_all();
     
@@ -38,8 +37,6 @@ int main() {
     gpio_init(PULSE_PIN);
     gpio_set_dir(PULSE_PIN, GPIO_OUT);
 
-    
-    // This produces a repeating sawtooth wave, where voltage increases linearly from 0V to max Vout(3.3V), then resets.
     while (1) {
         gpio_put(PULSE_PIN, 1);
         for (int i = 0; i < WAVEFORM_SIZE; i++) {

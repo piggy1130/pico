@@ -9,7 +9,7 @@ fall_fraction = 0.1               # 10% for falling edge
 
 # Voltage range: 0.7V to 4.3V
 v_min = 0.7
-v_max = 4.3
+v_max = 1.3
 dac_min = int(v_min / max_voltage * max_value)  # ~573
 dac_max = int(v_max / max_voltage * max_value)  # ~3521
 dac_range = dac_max - dac_min
