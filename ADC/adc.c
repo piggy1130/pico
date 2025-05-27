@@ -6,14 +6,14 @@
 
 #define OUTPUT_PIN 16
 #define ADC_PIN 26
-#define SAMPLE_COUNT 10000
+#define SAMPLE_COUNT 5000
 
 uint16_t adc_buffer[SAMPLE_COUNT];
 
 int main() {
     stdio_usb_init();
     while (!stdio_usb_connected()) {
-        sleep_ms(100); // Wait until USB is ready
+        sleep_ms(10); // Wait until USB is ready
     }
 
     gpio_init(OUTPUT_PIN);
@@ -25,13 +25,20 @@ int main() {
 
     sleep_ms(1000); // Give host time to start reading
     
-    printf("ADC Test\n");
+    //printf("ADC Test\n");
     sleep_ms(2000);
 
     for (int i = 0; i < SAMPLE_COUNT; i++) {
+        // signal frequency
+        // each toggle takes 10us, and 1 cycle takes 20us
+        // signal frequency = 1/20us = 50,000Hz = 50kHz
         gpio_put(OUTPUT_PIN, i % 2);
+        
+        // sample rate
+        // sample rate is 100kHz
+        // time per sample = 1/100kHz = 10us
+        sleep_us(20); // 50kHz 
         //sleep_us(100); // 10kHz
-        sleep_us(10); // 100kHz
         adc_buffer[i] = adc_read();
     }
 
@@ -41,7 +48,7 @@ int main() {
     }
 
     while (1) {
-        printf("idle...\n");
-        sleep_ms(1000);
+        //printf("idle...\n");
+        //sleep_ms(1000);
     }
 }
