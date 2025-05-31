@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "compare": "c",
-        "stdlib.h": "c"
-    }
+        "stdlib.h": "c",
+        "stdio.h": "c"
+    },
+    "cmake.sourceDirectory": "/home/cavity-trans/pico/ADC"
 }
