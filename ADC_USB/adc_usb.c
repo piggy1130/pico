@@ -8,9 +8,10 @@
 
 #define OUTPUT_PIN 16
 #define ADC_PIN 26
-#define SAMPLE_COUNT 20000
+#define SAMPLE_COUNT 5000
 
 #define PIN 27
+#define PIN_trigger 28
 
 static uint16_t data[SAMPLE_COUNT];
 
@@ -21,7 +22,10 @@ int main() {
     sleep_ms(2000);
 
     gpio_init(PIN);
+    gpio_init(PIN_trigger);
+
     gpio_set_dir(PIN, GPIO_OUT);
+    gpio_set_dir(PIN_trigger, GPIO_OUT);
 
     // Generate dummy data: ramp [0, 4095]
     for (int i = 0; i < SAMPLE_COUNT; i++) {
@@ -29,6 +33,9 @@ int main() {
     }
 
     while(true){
+
+        gpio_put(PIN_trigger, 1);
+        sleep_ms(10);
         gpio_put(PIN, 1);
         //sleep_ms(50);
         
@@ -36,8 +43,10 @@ int main() {
         fwrite(data, sizeof(uint16_t), SAMPLE_COUNT, stdout); // sends raw binary
         fflush(stdout);// forces the buffered data to be sent right away.
         
+        
+        gpio_put(PIN_trigger, 0);
         gpio_put(PIN, 0);
-        sleep_ms(50);
+        sleep_ms(20);
     }
 
     return 0;

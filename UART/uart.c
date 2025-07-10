@@ -74,6 +74,6 @@ int main() {
         gpio_put(PIN, 0);
         // Wait for DMA to finish before next transfer
         dma_channel_wait_for_finish_blocking(dma_chan);
-        sleep_ms(13);  // send once per second (or whatever rate you like)
+        sleep_ms(10);  // send once per second (or whatever rate you like)
     }
 }

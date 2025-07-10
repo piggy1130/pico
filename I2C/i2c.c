@@ -36,30 +36,30 @@ int main() {
     gpio_init(PULSE_PIN);
     gpio_set_dir(PULSE_PIN, GPIO_OUT);
 
+    while (true) {
+        gpio_put(PULSE_PIN, 1);
+        //mcp4725_write(MAX_DAC_VAL);
+        sleep_us(1000);
+
+        gpio_put(PULSE_PIN, 0);
+        //mcp4725_write(0);
+        sleep_us(1000);
+    }
+
     // while (true) {
     //     gpio_put(PULSE_PIN, 1);
     //     mcp4725_write(MAX_DAC_VAL);
-    //     sleep_us(1000);
+    //     sleep_us(250);
+    //     mcp4725_write(0);
+    //     sleep_us(250);
+    //     mcp4725_write(MAX_DAC_VAL);
+    //     sleep_us(250);
+    //     mcp4725_write(0);
+    //     sleep_us(250);        
 
     //     gpio_put(PULSE_PIN, 0);
-    //     mcp4725_write(0);
     //     sleep_us(1000);
     // }
-
-    while (true) {
-        gpio_put(PULSE_PIN, 1);
-        mcp4725_write(MAX_DAC_VAL);
-        sleep_us(250);
-        mcp4725_write(0);
-        sleep_us(250);
-        mcp4725_write(MAX_DAC_VAL);
-        sleep_us(250);
-        mcp4725_write(0);
-        sleep_us(250);        
-
-        gpio_put(PULSE_PIN, 0);
-        sleep_us(1000);
-    }
 
 
     return 0;
