@@ -9,7 +9,7 @@
 #define MCP4725_ADDR 0x60 // defaulte I2C address
 #define SDA_PIN 0 // SDA - data
 #define SCL_PIN 1 // SCL - clock
-#define PULSE_PIN 28
+#define PULSE_PIN 28 // channel 1 - scope
 
 #define MAX_DAC_VAL 4095
 
@@ -27,7 +27,7 @@ int main() {
     stdio_init_all();
     
      // Initialize I2C
-    i2c_init(I2C_PORT, 400 * 1000); // 400kHz I2C
+    i2c_init(I2C_PORT, 400 * 1000); // 100kHz or 400kHz I2C
     gpio_set_function(SDA_PIN, GPIO_FUNC_I2C);
     gpio_set_function(SCL_PIN, GPIO_FUNC_I2C);
     gpio_pull_up(SDA_PIN);
@@ -38,29 +38,13 @@ int main() {
 
     while (true) {
         gpio_put(PULSE_PIN, 1);
-        //mcp4725_write(MAX_DAC_VAL);
-        sleep_us(1000);
+        mcp4725_write(MAX_DAC_VAL);
+        sleep_us(200);
 
         gpio_put(PULSE_PIN, 0);
-        //mcp4725_write(0);
-        sleep_us(1000);
+        mcp4725_write(0);
+        sleep_us(300);
     }
-
-    // while (true) {
-    //     gpio_put(PULSE_PIN, 1);
-    //     mcp4725_write(MAX_DAC_VAL);
-    //     sleep_us(250);
-    //     mcp4725_write(0);
-    //     sleep_us(250);
-    //     mcp4725_write(MAX_DAC_VAL);
-    //     sleep_us(250);
-    //     mcp4725_write(0);
-    //     sleep_us(250);        
-
-    //     gpio_put(PULSE_PIN, 0);
-    //     sleep_us(1000);
-    // }
-
 
     return 0;
 }
