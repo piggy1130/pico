@@ -11,7 +11,7 @@
 #define CS_PIN    9
 #define PULSE_PIN 28
 
-#define MAX_DAC_VAL 511
+#define MAX_DAC_VAL 4095
 
 // Function to write to MCP4921 (12-bit SPI DAC)
 void mcp4921_write(uint16_t value) {
