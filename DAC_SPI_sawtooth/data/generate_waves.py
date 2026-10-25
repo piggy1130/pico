@@ -1,8 +1,10 @@
 import numpy as np
 
 # Parameters
-duration = 0.1                    # seconds for each period
-num_points = 5000                # samples
+# Used for generated timestamps and waveform calculations only.
+# generate_header.py discards timestamps; firmware controls playback timing.
+duration = 0.1                    # nominal period in seconds
+num_points = 10000                # samples
 max_value = 4095                  # peak DAC value
 max_voltage = 5.0
 fall_fraction = 0.1               # 10% for falling edge
